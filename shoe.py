@@ -7,9 +7,10 @@ class Shoe():
     num_decks = 5
 
     def __init__(self, cards):
-        self.cards = cards
-        self.plastic_card = int(.8 * len(cards))
-        self.shuffle()
+        if cards is not None:
+            self.cards = cards
+            self.plastic_card = int(.8 * len(cards))
+            self.shuffle()
 
     # decided to implement my own shuffle for the hell of it
     # O(n) with n calls to random number generator
@@ -26,6 +27,18 @@ class Shoe():
         for index, card in enumerate(self.cards):
             if index < self.plastic_card:
                 yield card
+
+    def create_blackjack_shoe(self):
+        cards = [BlackjackCard(BlackjackCard.ace) , BlackjackCard(BlackjackCard.two) , \
+            BlackjackCard(BlackjackCard.three) , BlackjackCard(BlackjackCard.four) , \
+            BlackjackCard(BlackjackCard.five) , BlackjackCard(BlackjackCard.six) , \
+            BlackjackCard(BlackjackCard.seven) , BlackjackCard(BlackjackCard.eight) , \
+            BlackjackCard(BlackjackCard.nine) , BlackjackCard(BlackjackCard.ten) , \
+            BlackjackCard(BlackjackCard.jack) , BlackjackCard(BlackjackCard.queen) , \
+            BlackjackCard(BlackjackCard.king)]
+        self.cards = cards * 4 * Shoe.num_decks
+        self.plastic_card = int(.8 * len(self.cards))
+        self.shuffle()
 
 class TestShoe(unittest.TestCase):
     def setUp(self):
