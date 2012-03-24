@@ -28,6 +28,13 @@ class Shoe():
             if index < self.plastic_card:
                 yield card
 
+    def popcard(self):
+        if len(self.cards) == 0:
+            self.create_blackjack_shoe()
+            return self.cards.pop()
+        else:
+            return self.cards.pop()
+
     def create_blackjack_shoe(self):
         cards = [BlackjackCard(BlackjackCard.ace) , BlackjackCard(BlackjackCard.two) , \
             BlackjackCard(BlackjackCard.three) , BlackjackCard(BlackjackCard.four) , \

@@ -10,7 +10,7 @@ class Table():
     def __str__(self):
         lines = ["---------\nThis is the table:"]
         for index, player in enumerate(self.players):
-            lines.append("---------\nThis is player %s:\n%s" % (index, player))
+            lines.append("---------\nThis is player %s with %s chips:\n%s" % (index, player.chips, player))
         return '\n'.join(lines)
 
     def add(self, players):

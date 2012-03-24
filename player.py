@@ -7,6 +7,7 @@ class Player():
     def __init__(self, table):
         self.table = table
         self.hands = []
+        self.chips = 500
 
     def __str__(self):
         lines = ["Hands for this player: "]
@@ -29,3 +30,9 @@ class Player():
 
     def add(self, hands):
         self.hands.extend(hands)
+
+    def increase(self, amount):
+        self.chips = self.chips + amount
+
+    def decrease(self, amount):
+        self.chips = self.chips - amount

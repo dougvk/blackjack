@@ -14,4 +14,5 @@ t.add([p,p2,p3,p4])
 
 g = Game(s,t)
 
-g.execute_round()
+while g.execute_round():
+    pass
