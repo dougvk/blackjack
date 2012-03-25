@@ -24,6 +24,19 @@ class Game():
         dealer_hand.add(self.shoe.popcard())
 
         for index,player in enumerate(active_players):
+            index = 0
+            print "-------------"
+            while index < len(player.hands):
+                split_hand = player.hands[index]
+                if player.split(split_hand):
+                    new_hand = player.hands[-1]
+                    split_hand.add(self.shoe.popcard())
+                    new_hand.add(self.shoe.popcard())
+                    print "Player splitting into:\n%s\n%s" % (split_hand, new_hand)
+                else:
+                    index = index + 1
+
+        for index,player in enumerate(active_players):
             for hand in player.hands:
                 print "-------------"
                 while player.hit(hand):

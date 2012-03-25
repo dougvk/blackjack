@@ -28,6 +28,15 @@ class Player():
         else:
             return False
 
+    def split(self,hand):
+        if hand.hand[0].rank == hand.hand[1].rank:
+            new_hand = Hand()
+            new_hand.add(hand.hand.pop())
+            new_hand.ante(self.table.minimum_bet)
+            self.add([new_hand])
+            return True
+        return False
+
     def add(self, hands):
         self.hands.extend(hands)
 
