@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import unittest
 from hand import *
+from table import *
+from card import *
 
 class Player():
 
@@ -39,8 +41,10 @@ class Player():
 
     def double_down(self, hand):
         if hand.total() == 10 or hand.total() == 11:
-            hand.ante(hand.bet * 2)
-            return True
+            if self.chips >= hand.bet * 2:
+                hand.ante(hand.bet * 2)
+                return True
+            return False
         return False
 
     def add(self, hands):
@@ -51,3 +55,64 @@ class Player():
 
     def decrease(self, amount):
         self.chips = self.chips - amount
+
+class TestHand(unittest.TestCase):
+    def setUp(self):
+        self.t = Table(10)
+        self.p = Player(self.t)
+        self.upcard = BlackjackCard(BlackjackCard.ten)
+        self.eightcard = BlackjackCard(BlackjackCard.eight)
+        self.acecard = BlackjackCard(BlackjackCard.ace)
+        self.downcard = BlackjackCard(BlackjackCard.two)
+
+    def testChips(self):
+        self.assertEqual(500,self.p.chips)
+        self.p.increase(10)
+        self.assertEqual(510,self.p.chips)
+        self.p.decrease(10)
+        self.assertEqual(500,self.p.chips)
+
+    def testBet(self):
+        self.p.place_bet()
+        self.assertEqual(1,len(self.p.hands))
+        hand = self.p.get_first_hand()
+        self.assertEqual(10,hand.bet)
+
+        hand.add(self.upcard)
+        hand.add(self.downcard)
+        self.t.upcard = self.downcard
+        self.assertEqual(False, self.p.hit(hand))
+
+        self.t.upcard = self.upcard
+        self.assertEqual(True, self.p.hit(hand))
+        hand.add(self.downcard)
+        self.assertEqual(True, self.p.hit(hand))
+        hand.add(self.downcard)
+        self.assertEqual(True, self.p.hit(hand))
+        hand.add(self.downcard)
+        self.assertEqual(False, self.p.hit(hand))
+
+    def test_advanced(self):
+        self.p.place_bet()
+        hand = self.p.get_first_hand()
+        hand.add(self.upcard)
+        hand.add(self.downcard)
+        self.assertEqual(False, self.p.double_down(hand))
+        self.assertEqual(False, self.p.split(hand))
+        hand.hand[0] = self.eightcard
+        self.p.chips = 10
+        self.assertEqual(False, self.p.double_down(hand))
+        self.assertEqual(10, hand.bet)
+        self.p.chips = 100
+        self.assertEqual(True, self.p.double_down(hand))
+        self.assertEqual(20, hand.bet)
+
+        hand.hand[1] = self.upcard
+        hand.hand[0] = self.upcard
+        self.assertEqual(True, self.p.split(hand))
+        self.assertEqual(2, len(self.p.hands))
+        self.assertEqual(1, len(self.p.hands[0].hand))
+        self.assertEqual(1, len(self.p.hands[1].hand))
+
+if __name__ == "__main__":
+    unittest.main()
