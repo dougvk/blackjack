@@ -6,6 +6,7 @@ class Table():
     def __init__(self, minimum_bet):
         self.players = []
         self.minimum_bet = minimum_bet
+        self.upcard = None
 
     def __str__(self):
         lines = ["---------\nThis is the table:"]

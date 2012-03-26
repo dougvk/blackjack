@@ -25,7 +25,7 @@ class Hand():
         return sum(hard_hand)
     
     def upcard(self):
-        return self.hand[0].rank
+        return self.hand[0]
 
     def blackjack(self):
         return len(self.hand) == 2 and self.total() == 21

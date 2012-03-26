@@ -23,7 +23,7 @@ class Player():
         return self.hands[0]
 
     def hit(self,hand):
-        if hand.total() < 17:
+        if hand.total() < 17 and hand.total() < self.table.upcard.rank + 10:
             return True
         else:
             return False
@@ -34,6 +34,12 @@ class Player():
             new_hand.add(hand.hand.pop())
             new_hand.ante(self.table.minimum_bet)
             self.add([new_hand])
+            return True
+        return False
+
+    def double_down(self, hand):
+        if hand.total() == 10 or hand.total() == 11:
+            hand.ante(hand.bet * 2)
             return True
         return False
 

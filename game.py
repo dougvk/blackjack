@@ -18,10 +18,11 @@ class Game():
             hand.add(self.shoe.popcard())
             hand.add(self.shoe.popcard())
 
-        self.dealer.hands = [Hand()]
+        self.dealer.add([Hand()])
         dealer_hand = self.dealer.get_first_hand()
         dealer_hand.add(self.shoe.popcard())
         dealer_hand.add(self.shoe.popcard())
+        self.table.upcard = dealer_hand.upcard()
 
         for index,player in enumerate(active_players):
             index = 0
@@ -33,6 +34,10 @@ class Game():
                     split_hand.add(self.shoe.popcard())
                     new_hand.add(self.shoe.popcard())
                     print "Player splitting into:\n%s\n%s" % (split_hand, new_hand)
+                elif player.double_down(split_hand):
+                    split_hand.add(self.shoe.popcard())
+                    print "Player doubling down %s" % (split_hand)
+                    index = index + 1
                 else:
                     index = index + 1
 
