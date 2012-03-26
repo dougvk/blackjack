@@ -4,6 +4,7 @@ from card import *
 
 class Hand():
     
+    # create hand with array of cards and bet for hand
     def __init__(self):
         self.hand = []
         self.bet = 0
@@ -14,9 +15,11 @@ class Hand():
     def add(self, card):
         self.hand.append(card)
     
+    # hard total counts aces as 1s
     def hard_total(self):
         return sum(map(lambda x: x.rank, self.hand))
 
+    # soft total counts one ace as 11, if present and < 21 in value
     def total(self):
         hard_hand = map(lambda x: x.rank, self.hand)
         if 1 in hard_hand:
@@ -74,6 +77,10 @@ class TestHand(unittest.TestCase):
         self.blackjack_player = Hand()
         self.blackjack_player.add(self.upcard)
         self.blackjack_player.add(self.acecard)
+
+    def test_blackjack(self):
+        self.assertEqual(True,self.blackjack_player.blackjack())
+        self.assertEqual(False,self.ace_player.blackjack())
 
     def test_hard_value(self):
         self.assertEqual(self.hand_player.hard_total(), 12)

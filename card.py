@@ -12,6 +12,7 @@ class BlackjackCard():
     def __str__(self):
         return "Card(%s)" % self.rank
 
+    # if ace, return soft value of 11
     def soft_rank(self):
         if self.rank == 1:
             return 11

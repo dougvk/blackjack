@@ -6,6 +6,7 @@ from card import *
 
 class Player():
 
+    # create a player associated with a table, a set of hands, and chips to bet with
     def __init__(self, table):
         self.table = table
         self.hands = []

@@ -6,11 +6,13 @@ from card import *
 class Shoe():
     num_decks = 5
 
-    def __init__(self, cards):
+    # create a shoe with cards optionally passed in, shuffle the deck
+    def __init__(self, cards=None):
         if cards is not None:
             self.cards = cards
-            self.plastic_card = int(.8 * len(cards))
             self.shuffle()
+        else:
+            self.create_blackjack_shoe()
 
     # decided to implement my own shuffle for the hell of it
     # O(n) with n calls to random number generator
@@ -19,15 +21,7 @@ class Shoe():
             swap_index = int(random.random() * (i-1))
             self.cards[swap_index], self.cards[i-1] = self.cards[i-1], self.cards[swap_index]
 
-    def deal_full(self):
-        for card in self.cards:
-            yield card
-
-    def deal_plastic(self):
-        for index, card in enumerate(self.cards):
-            if index < self.plastic_card:
-                yield card
-
+    # create new blackjack deck if empty, otherwise return next card
     def popcard(self):
         if len(self.cards) == 0:
             self.create_blackjack_shoe()
@@ -35,6 +29,12 @@ class Shoe():
         else:
             return self.cards.pop()
 
+    # create a generator to iterate over all the cards in the deck
+    def deal_full(self):
+        for card in self.cards:
+            yield card
+
+    # create blackjack deck with 5 decks
     def create_blackjack_shoe(self):
         cards = [BlackjackCard(BlackjackCard.ace) , BlackjackCard(BlackjackCard.two) , \
             BlackjackCard(BlackjackCard.three) , BlackjackCard(BlackjackCard.four) , \
@@ -44,7 +44,6 @@ class Shoe():
             BlackjackCard(BlackjackCard.jack) , BlackjackCard(BlackjackCard.queen) , \
             BlackjackCard(BlackjackCard.king)]
         self.cards = cards * 4 * Shoe.num_decks
-        self.plastic_card = int(.8 * len(self.cards))
         self.shuffle()
 
 class TestShoe(unittest.TestCase):
@@ -103,12 +102,6 @@ class TestShoe(unittest.TestCase):
             shoe_value = shoe_value + i.rank
         self.assertEqual(num_cards, len(self.shoe.cards))
         self.assertEqual(shoe_value,hard_shoe_value)
-
-    def test_deal_plastic(self):
-        num_cards = 0
-        for i in self.shoe.deal_plastic():
-            num_cards = num_cards + 1
-        self.assertEqual(num_cards, self.shoe.plastic_card)
 
 if __name__ == '__main__':
     unittest.main()

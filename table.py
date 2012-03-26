@@ -3,6 +3,7 @@ import unittest
 
 class Table():
 
+    # create a table with minimum bet and dealer upcard and set of players
     def __init__(self, minimum_bet):
         self.players = []
         self.minimum_bet = minimum_bet
